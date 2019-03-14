@@ -1,1 +1,21 @@
-<page-router-outlet></page-router-outlet>
+<GridLayout orientation="vertical" width="100%" height="100%" columns="*"
+    rows="*,auto">
+    <StackLayout col="0" row="0" backgroundColor="#f8f8f8">
+        <page-router-outlet></page-router-outlet>
+    </StackLayout>
+    <StackLayout col="0" row="1" orientation="horizontal" backgroundColor="#FFFFFF"
+        height="60">
+        <GridLayout rows="*" columns="*,*,*,*,*">
+            <Image col="0" row="0" (tap)="onButtonTap()" height="25" width="25"
+                margin="10" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/IAM.png"></Image>
+            <Image col="1" row="0" (tap)="onS3Tap()" height="25" width="25"
+                margin="10" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/s3.png"></Image>
+            <Image #awstab col="2" row="0" (tap)="onMainTap()" height="25"
+                width="25" margin="10" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/aws-b.png"></Image>
+            <Image col="3" row="0" (tap)="onButtonTap()" height="25" width="25"
+                margin="10" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/ec2-light.png"></Image>
+            <Image col="4" row="0" (tap)="onButtonTap()" height="25" width="25"
+                margin="10" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/rds.png"></Image>
+        </GridLayout>
+    </StackLayout>
+</GridLayout>
