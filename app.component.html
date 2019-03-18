@@ -1,0 +1,35 @@
+<GridLayout orientation="vertical" width="100%" height="100%" columns="*"
+    rows="*,auto">
+    <StackLayout col="0" row="0" backgroundColor="#f8f8f8">
+        <page-router-outlet></page-router-outlet>
+    </StackLayout>
+    <StackLayout col="0" row="1" orientation="horizontal" backgroundColor="#FFFFFF"
+        height="52">
+        <GridLayout rows="*" columns="*,*,*,*,*">
+            <StackLayout (tap)="onIamTap()" col="0" row="0"
+                [style.background-color]="stylelist[0] ? '#5cb3fd' : '#FFFFFF'">
+                <Image height="25" width="25" margin="13" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/IAM.png"></Image>
+            </StackLayout>
+            <StackLayout (tap)="onS3Tap()" col="1" row="0"
+                [style.background-color]="stylelist[1] ? '#5cb3fd' : '#FFFFFF'">
+                <Image height="25" width="25" margin="13" horizontalAlignment="center"
+                    verticalAlignment="center" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/s3.png"></Image>
+            </StackLayout>
+            <StackLayout (tap)="onMainTap()" col="2" row="0"
+                [style.background-color]="stylelist[2] ? '#5cb3fd' : '#FFFFFF'">
+                <Image height="25" width="25" margin="13" horizontalAlignment="center"
+                    verticalAlignment="center" src="https://s3.ap-south-1.amazonaws.com/awsiconsng/aws-b.png"></Image>
+            </StackLayout>
+            <StackLayout (tap)="onEc2Tap()" col="3" row="0"
+                [style.background-color]="stylelist[3] ? '#5cb3fd' : '#FFFFFF'">
+                <Image height="25" width="25" margin="13" verticalAlignment="center"
+                    src="https://s3.ap-south-1.amazonaws.com/awsiconsng/ec2-light.png"></Image>
+            </StackLayout>
+            <StackLayout col="4" row="0" [style.background-color]="stylelist[4] ? '#5cb3fd' : '#FFFFFF'">
+                <Image (tap)="onButtonTap()" height="25" width="25" margin="13"
+                    horizontalAlignment="center" verticalAlignment="center"
+                    src="https://s3.ap-south-1.amazonaws.com/awsiconsng/rds.png"></Image>
+            </StackLayout>
+        </GridLayout>
+    </StackLayout>
+</GridLayout>
