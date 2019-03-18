@@ -11,6 +11,7 @@ import { Ec2Component } from "./ec2/ec2.component";
 import { NgShadowModule } from "./nativescript-ng-shadow";
 
 import { S3Service } from "./services/s3.service";
+import { IAMService } from "./services/iam.service";
 @NgModule({
     bootstrap: [
         AppComponent
@@ -31,7 +32,7 @@ import { S3Service } from "./services/s3.service";
 
 
     ],
-    providers: [S3Service]
+    providers: [S3Service,IAMService]
     ,
     schemas: [
         NO_ERRORS_SCHEMA

@@ -16,16 +16,28 @@
                         color="#000000" text="AWS S3"></Label>
                     <Label style="horizontal-align:center;" fontSize="15"
                         marginTop="5" color="#bab8b8" text="Create/Delete Buckets or Upload files to Buckets"></Label>
-                    <Label style="horizontal-align:center;" fontSize="10"
-                        margin="15" color="#000000" text="BUCKETS"></Label>
+                    <StackLayout style="horizontal-align:center;" orientation="horizontal">
+                        <Label fontSize="10" margin="15" color="#000000" text="BUCKETS"></Label>
+                        <Label fontSize="10" borderRadius="100"
+                            backgroundColor="#6dffda" padding="10" color="#000000"
+                            [text]="bucketcount"></Label>
+                    </StackLayout>
                     <ScrollView orientation="horizontal"
                         scrollBarIndicatorVisible="false">
                         <StackLayout orientation="horizontal">
                             <GridLayout *ngFor="let bucket of bucketlist"
                                 height="90" width="70" rows="auto, auto">
-                                <Image row="0" col="0" src="~/images/icons/folder-7-64.png"
+                                <Image (longPress)="onLongPress(bucket)" row="0"
+                                    col="0" src="~/images/icons/folder-7-64.png"
                                     height="60"></Image>
-                                <Label row="1" col="0" [text]="bucket">
+                                <Label row="0" [visibility]="selected ? 'visible' : 'collapsed'"
+                                    borderRadius="100%" width="30" height="30"
+                                    text="&#xf055;" fontSize="30"
+                                    backgroundColor="white" color="#2E93F0"
+                                    class="fa" textAlignment="center"
+                                    verticalAlignment="bottom"
+                                    horizontalAlignment="center" marginLeft="70"></Label>
+                                <Label row="1" col="0" fontSize="12" [text]="bucket">
                                 </Label>
                             </GridLayout>
                         </StackLayout>
@@ -83,16 +95,10 @@
         </GridLayout>
 
         <AbsoluteLayout [ngSwitch]="OPTION" class="dialog-wrapper home-panel">
-            <StackLayout *ngSwitchCase="'DELETE'" class="dialog">
-                <Label class="h3" textWrap="true" text="Please select the buckets you want to delete"></Label>
-                <Label class="h5" textWrap="true" text="Confirm that the buckets are empty before deleting"></Label>
 
-                <Button class="btn btn-primary" text="Share">
-                </Button>
-                <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
-            </StackLayout>
             <StackLayout *ngSwitchCase="'CREATE'" class="dialog">
                 <Label class="h3" textWrap="true" text="Please enter the name of the Bucket you want to create"></Label>
+                <Label class="h5" textWrap="true" text="Use comma if you want to create multiple buckets"></Label>
                 <TextField #createbucket hint="Bucket Name" class="input input-border"></TextField>
                 <Button class="btn btn-primary" text="Create Bucket" (tap)="CreateBucket(createbucket.text)"></Button>
                 <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
@@ -105,36 +111,16 @@
                 <Button class="btn btn-outline" text="Close" (tap)="closeDialog()"></Button>
             </StackLayout>
 
+
             <StackLayout *ngSwitchCase="'DELETE'" class="dialog">
-                <Label class="h3" textWrap="true" text="Please select the buckets you want to delete"></Label>
+                <Label class="h3" textWrap="true" text="Are you sure you want to delete the selected buckets"></Label>
                 <Label class="h5" textWrap="true" text="Confirm that the buckets are empty before deleting"></Label>
-                <ScrollView *ngFor="let bucket of bucketlist">
-                    <Label [text]="bucket"></Label>
-                </ScrollView>
-                <Button class="btn btn-primary" text="Share">
+
+                <Button class="btn btn-primary" (tap)="DeleteBucket()" text="Delete">
                 </Button>
                 <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
             </StackLayout>
-            <StackLayout *ngSwitchCase="'DELETE'" class="dialog">
-                <Label class="h3" textWrap="true" text="Please select the buckets you want to delete"></Label>
-                <Label class="h5" textWrap="true" text="Confirm that the buckets are empty before deleting"></Label>
-                <ScrollView    *ngFor="let bucket of bucketlist">
-                    <Label [text]="bucket"></Label>
-                </ScrollView>
-                <Button class="btn btn-primary" text="Share">
-                </Button>
-                <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
-            </StackLayout>
-            <StackLayout *ngSwitchCase="'DELETE'" class="dialog">
-                <Label class="h3" textWrap="true" text="Please select the buckets you want to delete"></Label>
-                <Label class="h5" textWrap="true" text="Confirm that the buckets are empty before deleting"></Label>
-                <ScrollView *ngFor="let bucket of bucketlist">
-                    <Label [text]="bucket"></Label>
-                </ScrollView>
-                <Button class="btn btn-primary" text="Share">
-                </Button>
-                <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
-            </StackLayout>
+
         </AbsoluteLayout>
     </GridLayout>
 </ScrollView>

@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { S3Service } from "./services/s3.service"
+import { IAMService } from "./services/iam.service"
 
 @Component({
     selector: "ns-app",
@@ -9,7 +10,7 @@ import { S3Service } from "./services/s3.service"
 
 export class AppComponent {
 
-    constructor(private routerExtensions: RouterExtensions, private s3service:S3Service) {
+    constructor(private routerExtensions: RouterExtensions, private s3service: S3Service, private iamservice :IAMService) {
     }
 
     stylelist = [false, false, true, false, false];
@@ -26,6 +27,8 @@ export class AppComponent {
     }
     ngOnInit(): void {
         this.s3service.getbuckets();
+        this.iamservice.getusers();
+        this.iamservice.getgroups();
     }
 
     onS3Tap(): void {

@@ -7,8 +7,8 @@
         <GridLayout class="content">
             <StackLayout>
                 <StackLayout>
-                     <Image src="~/images/image_pie_semicircledonut.png"
-                        horizontalAlignment="center" marginTop="5" ></Image>
+                    <Image src="~/images/image_pie_semicircledonut.png"
+                        horizontalAlignment="center" marginTop="5"></Image>
 
                     <Label style="horizontal-align:center;" fontSize="80"
                         color="#000000" text="AWS IAM">
@@ -17,18 +17,30 @@
                         marginTop="5" color="#bab8b8" text="Create/Delete Buckets or Upload files to Buckets"></Label>
                     <Label style="horizontal-align:center;" fontSize="10"
                         margin="15" color="#000000" text="USERS"></Label>
-                    <ScrollView *ngFor="let user of userlist">
-                        <GridLayout rows="*" columns="*,*">
-
-
-                            <Label col="0" row="0" [text]="user" marginLeft="40"></Label>
-                            <Label col="1" row="0" text="Label (no binding)"></Label>
-                        </GridLayout>
+                    <ScrollView orientation="horizontal"
+                        scrollBarIndicatorVisible="false">
+                        <StackLayout orientation="horizontal">
+                            <GridLayout *ngFor="let user of userlist" height="90"
+                                width="70" rows="auto, auto">
+                                <Image (longPress)="onLongPress(user)" row="0"
+                                    col="0" src="~/images/icons/folder-7-64.png"
+                                    height="60"></Image>
+                                <Label row="0" [visibility]="selected ? 'visible' : 'collapsed'"
+                                    borderRadius="100%" width="30" height="30"
+                                    text="&#xf055;" fontSize="30"
+                                    backgroundColor="white" color="#2E93F0"
+                                    class="fa" textAlignment="center"
+                                    verticalAlignment="bottom"
+                                    horizontalAlignment="center" marginLeft="70"></Label>
+                                <Label row="1" col="0" [text]="user">
+                                </Label>
+                            </GridLayout>
+                        </StackLayout>
                     </ScrollView>
                     <StackLayout horizontalAlignment="center" orientation="horizontal">
 
                         <StackLayout>
-                            <StackLayout (tap)="createBucketDialog()" margin="10"
+                            <StackLayout (tap)="createUserDialog()" margin="10"
                                 height="70" width="70" backgroundColor="#fc4141"
                                 borderRadius="100">
                                 <StackLayout marginTop="10"
@@ -73,13 +85,17 @@
                     </StackLayout>
                     <Label style="horizontal-align:center;" fontSize="10"
                         margin="15" color="#000000" text="GROUPS"></Label>
-                    <ScrollView *ngFor="let group of grouplist">
-                        <GridLayout rows="*" columns="*,*">
-
-
-                            <Label col="0" row="0" [text]="group" marginLeft="40"></Label>
-                            <Label col="1" row="0" text="Label (no binding)"></Label>
-                        </GridLayout>
+                    <ScrollView orientation="horizontal"
+                        scrollBarIndicatorVisible="false">
+                        <StackLayout orientation="horizontal">
+                            <GridLayout *ngFor="let group of grouplist"
+                                height="90" width="70" rows="auto, auto">
+                                <Image row="0" col="0" src="~/images/icons/folder-7-64.png"
+                                    height="60"></Image>
+                                <Label row="1" col="0" [text]="group">
+                                </Label>
+                            </GridLayout>
+                        </StackLayout>
                     </ScrollView>
                     <StackLayout horizontalAlignment="center" orientation="horizontal">
 
@@ -185,14 +201,15 @@
                 <Label class="h3" textWrap="true" text="Please select the buckets you want to delete"></Label>
                 <Label class="h5" textWrap="true" text="Confirm that the buckets are empty before deleting"></Label>
 
-                <Button class="btn btn-primary" text="Share">
+                <Button class="btn btn-primary" (tap)="DeleteUser()" text="
+                    Delete">
                 </Button>
                 <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
             </StackLayout>
             <StackLayout *ngSwitchCase="'CREATE'" class="dialog">
-                <Label class="h3" textWrap="true" text="Please enter the name of the Bucket you want to create"></Label>
-                <TextField #createbucket hint="Bucket Name" class="input input-border"></TextField>
-                <Button class="btn btn-primary" text="Create Bucket" (tap)="CreateBucket(createbucket.text)"></Button>
+                <Label class="h3" textWrap="true" text="Please enter the name of the User/Users you want to create"></Label>
+                <TextField #createbucket hint="User Name" class="input input-border"></TextField>
+                <Button class="btn btn-primary" text="Create Bucket" (tap)="CreateUser(createbucket.text)"></Button>
                 <Button class="btn btn-outline" text="Cancel" (tap)="closeDialog()"></Button>
             </StackLayout>
             <StackLayout *ngSwitchCase="'SUCCESS'" class="dialog">

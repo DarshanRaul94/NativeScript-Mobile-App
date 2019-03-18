@@ -16,8 +16,10 @@ export class S3Component implements OnInit {
 
 
 	counter = 0;
-	bucketlist=this.s3service.bucketlist;
-	constructor(page: Page, private http: HttpClient, private s3service:S3Service) {
+	bucketlist = this.s3service.bucketlist;
+	bucketcount = this.bucketlist.length;
+	deletelist = []
+	constructor(page: Page, private http: HttpClient, private s3service: S3Service) {
 		page.actionBarHidden = true;
 		page.statusBarStyle = "light";
 
@@ -25,12 +27,16 @@ export class S3Component implements OnInit {
 
 
 	ngOnInit(): void {
-	//	this.getbuckets();
-		
+		//	this.getbuckets();
+
 	}
 	public OPTION: string;
-
-
+	selected = false;
+	onLongPress(bucketname) {
+		console.log(this.deletelist);
+		//this.selected = true;
+		this.deletelist.push(bucketname);
+	}
 	createBucketDialog() {
 		this.OPTION = "CREATE";
 		this.showDialog();
@@ -49,29 +55,33 @@ export class S3Component implements OnInit {
 		this.dialogOpen = false;
 	}
 
-	CreateBucket(bucketname) {
+	CreateBucket(bucketlist) {
 
-		console.log(bucketname);
-		this.postData(bucketname).subscribe((result) => {
 
-			console.log(result);
-		}, (error) => {
-			console.log(error);
-		});
+		var bucketarray :String[]= bucketlist.split(',');
+		for (var i = 0; i < bucketarray.length; i++) {
+			this.postData(bucketarray[i]).subscribe((result) => {
 
+				console.log(result);
+			}, (error) => {
+				console.log(error);
+			});
+		
+	}
 		this.closeDialog()
 		this.OPTION = "SUCCESS";
 		this.showDialog();
 	}
-	DeleteBucket(bucketname) {
+	DeleteBucket() {
 
-		console.log(bucketname);
-		this.deleteData(bucketname).subscribe((result) => {
+		for (var i = 0; i < this.deletelist.length; i++) {
+			this.deleteData(this.deletelist[i]).subscribe((result) => {
 
-			console.log(result);
-		}, (error) => {
-			console.log(error);
-		});
+				console.log(result);
+			}, (error) => {
+				console.log(error);
+			});
+		}
 	}
 	getbuckets() {
 
@@ -111,7 +121,7 @@ export class S3Component implements OnInit {
 	deleteData(data: any) {
 		console.log(data)
 
-		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=madhavi`,
+		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`,
 			{
 
 			});

@@ -2,7 +2,7 @@ import { SearchBar } from "tns-core-modules/ui/search-bar";
 import { Component, OnInit } from "@angular/core";
 import { Page } from "ui/page";
 import { RouterExtensions } from "nativescript-angular/router";
-
+import { S3Service } from "../services/s3.service"
 @Component({
 	selector: "Main",
 	moduleId: module.id,
@@ -16,8 +16,8 @@ export class MainComponent implements OnInit {
 		console.log("You are searching for " + searchBar.text);
 	}
 
-
-	constructor(page: Page, private routerExtensions: RouterExtensions) {
+	bucketcount = this.s3service.bucketlist.length;
+	constructor(page: Page, private routerExtensions: RouterExtensions, private s3service:S3Service) {
 		page.actionBarHidden = true;
 		page.statusBarStyle = "light";
 	}

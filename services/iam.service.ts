@@ -8,9 +8,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
     //     providedIn: "root"
     // }
 )
-export class S3Service {
+export class IAMService {
+
+    counter = 0;
+    userlist: String[] = [];
+    grouplist: String[] = [];
+
     private serverUrl = "https://httpbin.org/get";
-    bucketlist:String[]=[];
+
     constructor(private http: HttpClient) { }
 
     CreateBucket(bucketname) {
@@ -23,7 +28,7 @@ export class S3Service {
             console.log(error);
         });
 
-        
+  
     }
     DeleteBucket(bucketname) {
 
@@ -35,23 +40,44 @@ export class S3Service {
             console.log(error);
         });
     }
-    getbuckets() {
+    getusers() {
 
 
-        this.getData().subscribe((result) => {
-            this.bucketlist = result['buckets'];
-            console.log(this.bucketlist);
+        this.getuserData().subscribe((result) => {
+            this.userlist = [];
+            result['users'].forEach(element => {
+                console.log(element['Username']);
+                this.userlist.push(element['Username']);
+            });
         }, (error) => {
             console.log(error);
         });
 
     }
 
-    getData() {
+    getuserData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets?profile=darshan', { headers: headers });
+        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/users?profile=darshan', { headers: headers });
+    }
+    getgroups() {
+
+
+        this.getgroupData().subscribe((result) => {
+            this.grouplist = [];
+            result['groups'].forEach(element => {
+                console.log(element['Name']);
+                this.grouplist.push(element['Name']);
+            });
+        }, (error) => {
+            console.log(error);
+        });
+
     }
 
+    getgroupData() {
+        let headers = this.createRequestHeader();
+        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/groups?profile=darshan', { headers: headers });
+    }
     private createRequestHeader() {
         // set headers here e.g.
         let headers = new HttpHeaders({
