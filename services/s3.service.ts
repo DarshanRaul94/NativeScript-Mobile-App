@@ -49,7 +49,7 @@ export class S3Service {
 
     getData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets?profile=darshan', { headers: headers });
+        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3j', { headers: headers });
     }
 
     private createRequestHeader() {
@@ -57,6 +57,7 @@ export class S3Service {
         let headers = new HttpHeaders({
 
             "Content-Type": "application/json",
+            "profile":"darshan"
         });
 
         return headers;
