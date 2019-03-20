@@ -42,7 +42,7 @@ export class S3Component implements OnInit {
 		this.showDialog();
 	}
 	deleteBucketDialog() {
-		this.getbuckets()
+		this.s3service.getbuckets()
 		this.OPTION = "DELETE";
 		this.showDialog();
 	}
@@ -83,48 +83,24 @@ export class S3Component implements OnInit {
 			});
 		}
 	}
-	getbuckets() {
 
 
-		this.getData().subscribe((result) => {
-			this.bucketlist = result['buckets'];
-			console.log(this.bucketlist);
-		}, (error) => {
-			console.log(error);
-		});
-
-	}
-
-	getData() {
-		let headers = this.createRequestHeader();
-		return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets?profile=darshan', { headers: headers });
-	}
-
-	private createRequestHeader() {
-		// set headers here e.g.
-		let headers = new HttpHeaders({
-
-			"Content-Type": "application/json",
-			"profile":"darshan"
-		});
-
-		return headers;
-	}
 	postData(data: any) {
 		let options = this.createRequestOptions();
 
-		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3j`, JSON.stringify(data) ,
+		return this.http.post(`https://2f7wr.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets`, JSON.stringify(data),
 			{
 				headers: options
 			});
 	}
 
-	deleteData(data: any) {
-		console.log(data)
+	deleteData(bucket_name) {
+		console.log(bucket_name)
+		let options = this.createRequestOptions();
 
-		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`,
+		return this.http.delete(`https://2f7wrz7.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${bucket_name}`,
 			{
-
+				headers: options
 			});
 	}
 
