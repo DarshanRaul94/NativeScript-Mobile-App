@@ -58,16 +58,16 @@ export class S3Component implements OnInit {
 	CreateBucket(bucketlist) {
 
 
-		var bucketarray :String[]= bucketlist.split(',');
+		var bucketarray: String[] = bucketlist.split(',');
 		for (var i = 0; i < bucketarray.length; i++) {
-			this.postData(bucketarray[i]).subscribe((result) => {
+			this.postData({ "bucket_name": bucketarray[i] }).subscribe((result) => {
 
 				console.log(result);
 			}, (error) => {
 				console.log(error);
 			});
-		
-	}
+
+		}
 		this.closeDialog()
 		this.OPTION = "SUCCESS";
 		this.showDialog();
@@ -105,16 +105,17 @@ export class S3Component implements OnInit {
 		let headers = new HttpHeaders({
 
 			"Content-Type": "application/json",
+			"profile":"darshan"
 		});
 
 		return headers;
 	}
 	postData(data: any) {
-		console.log(data)
+		let options = this.createRequestOptions();
 
-		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`, data,
+		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3j`, JSON.stringify(data) ,
 			{
-
+				headers: options
 			});
 	}
 
@@ -129,7 +130,8 @@ export class S3Component implements OnInit {
 
 	private createRequestOptions() {
 		let headers = new HttpHeaders({
-			"Content-Type": "application/json"
+			"Content-Type": "application/json",
+			"profile": "darshan"
 		});
 		return headers;
 	}
