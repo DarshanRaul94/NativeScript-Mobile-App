@@ -10,31 +10,9 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 )
 export class S3Service {
     private serverUrl = "https://httpbin.org/get";
-    bucketlist:String[]=[];
+    bucketlist: String[] = [];
     constructor(private http: HttpClient) { }
 
-    CreateBucket(bucketname) {
-
-        console.log(bucketname);
-        this.postData(bucketname).subscribe((result) => {
-
-            console.log(result);
-        }, (error) => {
-            console.log(error);
-        });
-
-        
-    }
-    DeleteBucket(bucketname) {
-
-        console.log(bucketname);
-        this.deleteData(bucketname).subscribe((result) => {
-
-            console.log(result);
-        }, (error) => {
-            console.log(error);
-        });
-    }
     getbuckets() {
 
 
@@ -49,7 +27,7 @@ export class S3Service {
 
     getData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3j', { headers: headers });
+        return this.http.get('https://2f7wr6b.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets', { headers: headers });
     }
 
     private createRequestHeader() {
@@ -57,33 +35,10 @@ export class S3Service {
         let headers = new HttpHeaders({
 
             "Content-Type": "application/json",
-            "profile":"darshan"
+            "profile": "darshan"
         });
 
         return headers;
     }
-    postData(data: any) {
-        console.log(data)
-
-        return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`, data,
-            {
-
-            });
-    }
-
-    deleteData(data: any) {
-        console.log(data)
-
-        return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=madhavi`,
-            {
-
-            });
-    }
-
-    private createRequestOptions() {
-        let headers = new HttpHeaders({
-            "Content-Type": "application/json"
-        });
-        return headers;
-    }
+    
 }
