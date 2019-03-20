@@ -18,28 +18,7 @@ export class IAMService {
 
     constructor(private http: HttpClient) { }
 
-    CreateBucket(bucketname) {
-
-        console.log(bucketname);
-        this.postData(bucketname).subscribe((result) => {
-
-            console.log(result);
-        }, (error) => {
-            console.log(error);
-        });
-
-  
-    }
-    DeleteBucket(bucketname) {
-
-        console.log(bucketname);
-        this.deleteData(bucketname).subscribe((result) => {
-
-            console.log(result);
-        }, (error) => {
-            console.log(error);
-        });
-    }
+    
     getusers() {
 
 
@@ -57,7 +36,7 @@ export class IAMService {
 
     getuserData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/users?profile=darshan', { headers: headers });
+        return this.http.get('https://2f7wb.execute-api.ap-south-1.amazonaws.com/dev/iam/users', { headers: headers });
     }
     getgroups() {
 
@@ -76,39 +55,17 @@ export class IAMService {
 
     getgroupData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/groups?profile=darshan', { headers: headers });
+        return this.http.get('https://6b.execute-api.ap-south-1.amazonaws.com/dev/iam/groups', { headers: headers });
     }
     private createRequestHeader() {
         // set headers here e.g.
         let headers = new HttpHeaders({
 
             "Content-Type": "application/json",
+            "profile":"darshan"
         });
 
         return headers;
     }
-    postData(data: any) {
-        console.log(data)
-
-        return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`, data,
-            {
-
-            });
-    }
-
-    deleteData(data: any) {
-        console.log(data)
-
-        return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=madhavi`,
-            {
-
-            });
-    }
-
-    private createRequestOptions() {
-        let headers = new HttpHeaders({
-            "Content-Type": "application/json"
-        });
-        return headers;
-    }
+    
 }
