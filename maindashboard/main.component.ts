@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Page } from "ui/page";
 import { RouterExtensions } from "nativescript-angular/router";
 import { S3Service } from "../services/s3.service"
+import { IAMService } from "../services/iam.service"
 @Component({
 	selector: "Main",
 	moduleId: module.id,
@@ -17,7 +18,8 @@ export class MainComponent implements OnInit {
 	}
 
 	bucketcount = this.s3service.bucketlist.length;
-	constructor(page: Page, private routerExtensions: RouterExtensions, private s3service: S3Service) {
+	usercount = this.iamservice.userlist.length;
+	constructor(page: Page, private routerExtensions: RouterExtensions, private s3service: S3Service, private iamservice: IAMService) {
 		page.actionBarHidden = true;
 		page.statusBarStyle = "light";
 	}
@@ -37,6 +39,7 @@ export class MainComponent implements OnInit {
 			// Do something after
 			console.log('after delay')
 			this.bucketcount = this.s3service.bucketlist.length;
+			this.usercount = this.iamservice.userlist.length;
 		})();
 
 
