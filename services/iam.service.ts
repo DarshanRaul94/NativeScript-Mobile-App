@@ -18,7 +18,7 @@ export class IAMService {
 
     constructor(private http: HttpClient) { }
 
-    
+
     getusers() {
 
 
@@ -36,7 +36,7 @@ export class IAMService {
 
     getuserData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://2f7wb.execute-api.ap-south-1.amazonaws.com/dev/iam/users', { headers: headers });
+        return this.http.get('https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/users', { headers: headers });
     }
     getgroups() {
 
@@ -55,17 +55,61 @@ export class IAMService {
 
     getgroupData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://6b.execute-api.ap-south-1.amazonaws.com/dev/iam/groups', { headers: headers });
+        return this.http.get('https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/groups', { headers: headers });
     }
+
     private createRequestHeader() {
         // set headers here e.g.
         let headers = new HttpHeaders({
 
             "Content-Type": "application/json",
-            "profile":"darshan"
+            "profile": "darshan"
         });
 
         return headers;
     }
-    
+
+    postuserData(data: any) {
+        let options = this.createRequestOptions();
+
+        return this.http.post(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/users`, JSON.stringify(data),
+            {
+                headers: options
+            });
+    }
+
+    deleteuserData(user_name) {
+
+        let options = this.createRequestOptions();
+
+        return this.http.delete(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/users/${user_name}`,
+            {
+                headers: options
+            });
+    }
+    postgroupData(data: any) {
+        let options = this.createRequestOptions();
+
+        return this.http.post(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/groups`, JSON.stringify(data),
+            {
+                headers: options
+            });
+    }
+
+    deletegroupData(group_name) {
+
+        let options = this.createRequestOptions();
+
+        return this.http.delete(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/iam/groups/${group_name}`,
+            {
+                headers: options
+            });
+    }
+    private createRequestOptions() {
+        let headers = new HttpHeaders({
+            "Content-Type": "application/json",
+            "profile": "darshan"
+        });
+        return headers;
+    }
 }

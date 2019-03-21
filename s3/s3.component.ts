@@ -17,7 +17,7 @@ export class S3Component implements OnInit {
 
 	counter = 0;
 	bucketlist = this.s3service.bucketlist;
-	bucketcount = this.bucketlist.length;
+	bucketcount = this.s3service.bucketlist.length;
 	deletelist = []
 	constructor(page: Page, private http: HttpClient, private s3service: S3Service) {
 		page.actionBarHidden = true;
@@ -27,7 +27,7 @@ export class S3Component implements OnInit {
 
 
 	ngOnInit(): void {
-		//	this.getbuckets();
+
 
 	}
 	public OPTION: string;
@@ -42,7 +42,7 @@ export class S3Component implements OnInit {
 		this.showDialog();
 	}
 	deleteBucketDialog() {
-		this.s3service.getbuckets()
+		
 		this.OPTION = "DELETE";
 		this.showDialog();
 	}
@@ -55,60 +55,72 @@ export class S3Component implements OnInit {
 		this.dialogOpen = false;
 	}
 
+	getbuckets(milliseconds) {
+		(async () => {
+			// Do something before delay
+			console.log('before delay')
+			this.s3service.getbuckets();
+
+			await this.delay(milliseconds);
+
+			// Do something after
+			console.log('after delay')
+
+			this.bucketlist = this.s3service.bucketlist;
+			this.bucketcount = this.s3service.bucketlist.length;
+		})();
+
+
+
+	}
+	delay(ms: number) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
 	CreateBucket(bucketlist) {
 
+		(async () => {
+			var bucketarray: String[] = bucketlist.split(',');
+			for (var i = 0; i < bucketarray.length; i++) {
+				this.s3service.postData({ "bucket_name": bucketarray[i] }).subscribe((result) => {
 
-		var bucketarray: String[] = bucketlist.split(',');
-		for (var i = 0; i < bucketarray.length; i++) {
-			this.postData({ "bucket_name": bucketarray[i] }).subscribe((result) => {
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
 
-				console.log(result);
-			}, (error) => {
-				console.log(error);
-			});
+			}
+			//load a progress bar here
+			await this.delay(5000);
 
-		}
-		this.closeDialog()
-		this.OPTION = "SUCCESS";
-		this.showDialog();
+			// Do something after
+			console.log('after delay')
+			this.getbuckets(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
 	}
 	DeleteBucket() {
+		(async () => {
+			for (var i = 0; i < this.deletelist.length; i++) {
+				this.s3service.deleteData(this.deletelist[i]).subscribe((result) => {
 
-		for (var i = 0; i < this.deletelist.length; i++) {
-			this.deleteData(this.deletelist[i]).subscribe((result) => {
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
+			}
+			//load a progress bar here
+			await this.delay(5000);
 
-				console.log(result);
-			}, (error) => {
-				console.log(error);
-			});
-		}
+			// Do something after
+			console.log('after delay')
+			this.getbuckets(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
 	}
 
 
-	postData(data: any) {
-		let options = this.createRequestOptions();
-
-		return this.http.post(`https://2f7wr.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets`, JSON.stringify(data),
-			{
-				headers: options
-			});
-	}
-
-	deleteData(bucket_name) {
-		console.log(bucket_name)
-		let options = this.createRequestOptions();
-
-		return this.http.delete(`https://2f7wrz7.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${bucket_name}`,
-			{
-				headers: options
-			});
-	}
-
-	private createRequestOptions() {
-		let headers = new HttpHeaders({
-			"Content-Type": "application/json",
-			"profile": "darshan"
-		});
-		return headers;
-	}
 }

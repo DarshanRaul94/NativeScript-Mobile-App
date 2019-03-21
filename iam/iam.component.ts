@@ -15,6 +15,8 @@ export class IamComponent implements OnInit {
 
 
 	counter = 0;
+	deleteuserlist = []
+	deletegrouplist = []
 	userlist: String[] = this.iamservice.userlist;
 	grouplist: String[] = this.iamservice.grouplist;
 	constructor(page: Page, private http: HttpClient, private iamservice: IAMService) {
@@ -24,22 +26,37 @@ export class IamComponent implements OnInit {
 
 
 	ngOnInit(): void {
-		this.getusers();
+
 
 	}
 	public OPTION: string;
 	selected = false;
-	onLongPress(args) {
-		console.log("LongPress!");
-		this.selected = true;
+	onLongPressuser(username) {
+		console.log(this.deleteuserlist);
+		//this.selected = true;
+		this.deleteuserlist.push(username);
 	}
-	createBucketDialog() {
-		this.OPTION = "CREATE";
+	onLongPressgroup(groupname) {
+		console.log(this.deleteuserlist);
+		//this.selected = true;
+		this.deletegrouplist.push(groupname);
+	}
+	createUserDialog() {
+		this.OPTION = "CREATEUSER";
 		this.showDialog();
 	}
-	deleteBucketDialog() {
-		this.getusers()
-		this.OPTION = "DELETE";
+	deleteUserDialog() {
+
+		this.OPTION = "DELETEUSER";
+		this.showDialog();
+	}
+	createGroupDialog() {
+		this.OPTION = "CREATEGROUP";
+		this.showDialog();
+	}
+	deleteGroupDialog() {
+
+		this.OPTION = "DELETEGROUP";
 		this.showDialog();
 	}
 	showDialog() {
@@ -51,38 +68,106 @@ export class IamComponent implements OnInit {
 		this.dialogOpen = false;
 	}
 
-	CreateBucket(bucketname) {
+	CreateUser(userlist) {
 
-		console.log(bucketname);
-		this.postData(bucketname).subscribe((result) => {
+		(async () => {
+			var userarray: String[] = userlist.split(',');
+			for (var i = 0; i < userarray.length; i++) {
+				this.iamservice.postuserData({ "user_name": userarray[i] }).subscribe((result) => {
 
-			console.log(result);
-		}, (error) => {
-			console.log(error);
-		});
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
 
-		this.closeDialog()
-		this.OPTION = "SUCCESS";
-		this.showDialog();
+			}
+			//load a progress bar here
+			await this.delay(5000);
+
+			// Do something after
+			console.log('after delay')
+			this.getusers(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
 	}
-	DeleteBucket(bucketname) {
+	DeleteUser() {
+		(async () => {
+			for (var i = 0; i < this.deleteuserlist.length; i++) {
+				this.iamservice.deleteuserData(this.deleteuserlist[i]).subscribe((result) => {
 
-		console.log(bucketname);
-		this.deleteData(bucketname).subscribe((result) => {
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
+			}
+			//load a progress bar here
+			await this.delay(5000);
 
-			console.log(result);
-		}, (error) => {
-			console.log(error);
-		});
+			// Do something after
+			console.log('after delay')
+			this.getusers(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
 	}
-	getusers() {
+
+	CreateGroup(grouplist) {
+
+		(async () => {
+			var grouparray: String[] = grouplist.split(',');
+			for (var i = 0; i < grouparray.length; i++) {
+				this.iamservice.postgroupData({ "group_name": grouparray[i] }).subscribe((result) => {
+
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
+
+			}
+			//load a progress bar here
+			await this.delay(5000);
+
+			// Do something after
+			console.log('after delay')
+			this.getgroups(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
+	}
+	DeleteGroup() {
+		(async () => {
+			for (var i = 0; i < this.deletegrouplist.length; i++) {
+				this.iamservice.deletegroupData(this.deletegrouplist[i]).subscribe((result) => {
+
+					console.log(result);
+				}, (error) => {
+					console.log(error);
+				});
+			}
+			//load a progress bar here
+			await this.delay(5000);
+
+			// Do something after
+			console.log('after delay')
+			this.getgroups(3000);
+			this.closeDialog()
+			this.OPTION = "SUCCESS";
+			this.showDialog();
+		})();
+	}
+
+	getusers(miliseconds) {
 
 		(async () => {
 			// Do something before delay
 			console.log('before delay')
 			this.iamservice.getusers();
 
-			await this.delay(3000);
+			await this.delay(miliseconds);
 
 			// Do something after
 			console.log('after delay')
@@ -92,60 +177,26 @@ export class IamComponent implements OnInit {
 
 
 	}
+	getgroups(miliseconds) {
+
+		(async () => {
+			// Do something before delay
+			console.log('before delay')
+			this.iamservice.getgroups();
+
+			await this.delay(miliseconds);
+
+			// Do something after
+			console.log('after delay')
+			this.grouplist = this.iamservice.grouplist
+		})();
+
+
+
+	}
 	delay(ms: number) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 
-	getgroups() {
 
-
-		this.getgroupData().subscribe((result) => {
-			this.grouplist = [];
-			result['groups'].forEach(element => {
-				console.log(element['Name']);
-				this.grouplist.push(element['Name']);
-			});
-		}, (error) => {
-			console.log(error);
-		});
-
-	}
-
-	getgroupData() {
-		let headers = this.createRequestHeader();
-		return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/groups?profile=darshan', { headers: headers });
-	}
-	private createRequestHeader() {
-		// set headers here e.g.
-		let headers = new HttpHeaders({
-
-			"Content-Type": "application/json",
-		});
-
-		return headers;
-	}
-	postData(data: any) {
-		console.log(data)
-
-		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`, data,
-			{
-
-			});
-	}
-
-	deleteData(data: any) {
-		console.log(data)
-
-		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=madhavi`,
-			{
-
-			});
-	}
-
-	private createRequestOptions() {
-		let headers = new HttpHeaders({
-			"Content-Type": "application/json"
-		});
-		return headers;
-	}
 }

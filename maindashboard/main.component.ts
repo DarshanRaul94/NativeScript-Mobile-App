@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
 	}
 
 	bucketcount = this.s3service.bucketlist.length;
-	constructor(page: Page, private routerExtensions: RouterExtensions, private s3service:S3Service) {
+	constructor(page: Page, private routerExtensions: RouterExtensions, private s3service: S3Service) {
 		page.actionBarHidden = true;
 		page.statusBarStyle = "light";
 	}
@@ -25,5 +25,24 @@ export class MainComponent implements OnInit {
 		this.routerExtensions.navigate(["/s3"]);
 	}
 	ngOnInit(): void {
+		this.getcounts();
+	}
+
+	getcounts() {
+		(async () => {
+
+			//load a progress bar here
+			await this.delay(5000);
+
+			// Do something after
+			console.log('after delay')
+			this.bucketcount = this.s3service.bucketlist.length;
+		})();
+
+
+	}
+
+	delay(ms: number) {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 }

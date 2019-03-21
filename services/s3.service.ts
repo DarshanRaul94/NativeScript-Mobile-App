@@ -27,7 +27,7 @@ export class S3Service {
 
     getData() {
         let headers = this.createRequestHeader();
-        return this.http.get('https://2f7wr6b.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets', { headers: headers });
+        return this.http.get('https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets', { headers: headers });
     }
 
     private createRequestHeader() {
@@ -41,4 +41,30 @@ export class S3Service {
         return headers;
     }
     
+	postData(data: any) {
+		let options = this.createRequestOptions();
+
+		return this.http.post(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets`, JSON.stringify(data),
+			{
+				headers: options
+			});
+	}
+
+	deleteData(bucket_name) {
+		console.log(bucket_name)
+		let options = this.createRequestOptions();
+
+		return this.http.delete(`https://2f7wrz7c6b.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${bucket_name}`,
+			{
+				headers: options
+			});
+	}
+
+	private createRequestOptions() {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			"profile": "darshan"
+		});
+		return headers;
+	}
 }
