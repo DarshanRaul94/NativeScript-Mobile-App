@@ -1,18 +1,8 @@
-import {
-	Component,
-	OnInit
-} from "@angular/core";
-import {
-	HttpClient,
-	HttpHeaders
-} from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import {
-	Page
-} from "ui/page";
-import {
-	IAMService
-} from "../services/iam.service"
+import { Page } from "ui/page";
+import { IAMService } from "../services/iam.service"
 @Component({
 	selector: "Iam",
 	moduleId: module.id,
@@ -22,7 +12,7 @@ import {
 export class IamComponent implements OnInit {
 	dialogOpen = false;
 
-	deletelist = []
+
 
 	counter = 0;
 	userlist: String[] = this.iamservice.userlist;
@@ -34,16 +24,16 @@ export class IamComponent implements OnInit {
 
 
 	ngOnInit(): void {
+		this.getusers();
 
 	}
 	public OPTION: string;
 	selected = false;
-	onLongPress(username) {
-		console.log(username);
-		//this.selected = true;
-		this.deletelist.push(username);
+	onLongPress(args) {
+		console.log("LongPress!");
+		this.selected = true;
 	}
-	createUserDialog() {
+	createBucketDialog() {
 		this.OPTION = "CREATE";
 		this.showDialog();
 	}
@@ -61,55 +51,51 @@ export class IamComponent implements OnInit {
 		this.dialogOpen = false;
 	}
 
-	CreateUser(userlist) {
+	CreateBucket(bucketname) {
 
+		console.log(bucketname);
+		this.postData(bucketname).subscribe((result) => {
 
-		var userarray: String[] = userlist.split(',');
-		for (var i = 0; i < userarray.length; i++) {
-			this.postData(userarray[i]).subscribe((result) => {
-
-				console.log(result);
-			}, (error) => {
-				console.log(error);
-			});
-
-		}
-		this.closeDialog()
-		this.OPTION = "SUCCESS";
-		this.showDialog();
-	}
-	DeleteUser() {
-
-		for (var i = 0; i < this.deletelist.length; i++) {
-			this.deleteData(this.deletelist[i]).subscribe((result) => {
-
-				console.log(result);
-			}, (error) => {
-				console.log(error);
-			});
-		}
-	}
-	getusers() {
-
-
-		this.getuserData().subscribe((result) => {
-			this.userlist = [];
-			result['users'].forEach(element => {
-				console.log(element['Username']);
-				this.userlist.push(element['Username']);
-			});
+			console.log(result);
 		}, (error) => {
 			console.log(error);
 		});
 
+		this.closeDialog()
+		this.OPTION = "SUCCESS";
+		this.showDialog();
 	}
+	DeleteBucket(bucketname) {
 
-	getuserData() {
-		let headers = this.createRequestHeader();
-		return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/users?profile=darshan', {
-			headers: headers
+		console.log(bucketname);
+		this.deleteData(bucketname).subscribe((result) => {
+
+			console.log(result);
+		}, (error) => {
+			console.log(error);
 		});
 	}
+	getusers() {
+
+		(async () => {
+			// Do something before delay
+			console.log('before delay')
+			this.iamservice.getusers();
+
+			await this.delay(3000);
+
+			// Do something after
+			console.log('after delay')
+			this.userlist = this.iamservice.userlist
+		})();
+
+
+
+	}
+	delay(ms: number) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	getgroups() {
 
 
@@ -127,9 +113,7 @@ export class IamComponent implements OnInit {
 
 	getgroupData() {
 		let headers = this.createRequestHeader();
-		return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/groups?profile=darshan', {
-			headers: headers
-		});
+		return this.http.get('https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/groups?profile=darshan', { headers: headers });
 	}
 	private createRequestHeader() {
 		// set headers here e.g.
@@ -143,17 +127,19 @@ export class IamComponent implements OnInit {
 	postData(data: any) {
 		console.log(data)
 
-		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/users/${data}?profile=darshan`, data, {
+		return this.http.post(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=darshan`, data,
+			{
 
-		});
+			});
 	}
 
 	deleteData(data: any) {
 		console.log(data)
 
-		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/iam/users/${data}?profile=darshan`, {
+		return this.http.delete(`https://8gyb026tdg.execute-api.ap-south-1.amazonaws.com/dev/s3/buckets/${data}?profile=madhavi`,
+			{
 
-		});
+			});
 	}
 
 	private createRequestOptions() {
