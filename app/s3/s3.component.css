@@ -1,0 +1,59 @@
+.home-panel{
+	vertical-align:middle;
+	font-size: 20;
+	margin: 15;
+}
+@keyframes show {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.dialogOpen .content {
+    opacity: 0.2;
+}
+.dialogOpen .dialog-wrapper {
+    visibility: visible;
+    animation-name: show;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+   
+}
+.dialog-wrapper {
+    visibility: collapse;
+    opacity: 0;
+}
+
+.dialog {
+    border-width: 1 1 1 1;
+    border-color: black;
+    background-color: white;
+    width: 100%;
+    margin-top: 100;
+    padding: 20;
+    
+}
+.bucketview{
+border-width: 4 4 4 4;
+    border-radius: 30;
+    border-color: #fc4141;
+    background-color: white;
+    width: 80%;
+
+}
+.bucketviewtitle{
+    border-width: 2 2 0 2;
+    font-size: 15;
+    border-top-left-radius: 30;
+    border-top-right-radius: 30;
+    border-bottom-left-radius: 10;
+    font-weight: bold;
+    border-color: #fc4141;
+    background-color: #fc4141;
+    width: 80%;
+    color: white;
+   
+}
+.dialog Label {
+    margin: 0 15 15 15;
+    color: black;
+}
