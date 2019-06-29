@@ -3,10 +3,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { Page } from "ui/page";
 import { ChangeDetectionStrategy } from "@angular/core";
+
+// IMPORTING THE SERVICES
 import { S3Service } from "../services/s3.service"
 
 import { EC2Service } from "../services/ec2.service"
 
+
+//DECLARING THE COMPONENT
 @Component({
 	selector: "Ec2",
 	moduleId: module.id,
@@ -14,18 +18,24 @@ import { EC2Service } from "../services/ec2.service"
 	styleUrls: ['./ec2.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
+
+
+
 export class Ec2Component implements OnInit {
 
 
 
-	dialogOpen = false;
+	dialogOpen = false; //FOR THE ACTION DIALOG. FALSE BY DEFAULT. TRUE WHEN CLICKED
 
 
 	counter = 0;
+	//INITIALZING THE LISTS WITH SERVICE VALUES
 	keypairlist = this.ec2service.keypairlist;
 	bucketlist = this.s3service.bucketlist;
 	bucketcount = this.s3service.bucketlist.length;
+	//EMPTY DELETE LIST
 	deletelist = []
+
 	constructor(page: Page, private http: HttpClient, private s3service: S3Service, private ec2service: EC2Service) {
 		page.actionBarHidden = true;
 		page.statusBarStyle = "light";
@@ -62,6 +72,10 @@ export class Ec2Component implements OnInit {
 
 	public OPTION: string;
 	selected = false;
+
+
+// COPY OF S3 FUCNTIONS AS PLACEHOLDERS WILL EDIT
+
 	onLongPress(bucketname) {
 		console.log(this.deletelist);
 		//this.selected = true;

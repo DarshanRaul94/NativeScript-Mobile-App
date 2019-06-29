@@ -1,3 +1,18 @@
+
+
+
+
+
+
+
+
+// NOT USING THIS COMPONENT
+
+
+
+
+
+
 import { ItemEventData } from "ui/list-view"
 import { SearchBar } from "ui/search-bar";
 import { Component, OnInit } from "@angular/core";
